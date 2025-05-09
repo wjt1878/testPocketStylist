@@ -1,8 +1,3 @@
-// AUTHENTICATION FILES
-// LoginScreen.js - The screen where existing users enter their 
-// email and password to access their account. 
-// Shows error messages if login fails.
-
 import React, { useState } from 'react';
 import {
   View,
@@ -10,7 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  Alert
 } from 'react-native';
 import { Link } from 'expo-router';
 import { loginUser } from '../services/auth';
@@ -39,6 +35,14 @@ export default function LoginScreen() {
     //actual firebase
     try {
       await loginUser(email, password);
+      // t show success alert
+      Alert.alert(
+        'Login Successful',
+        'Welcome back!',
+        [
+          { text: 'OK' } // AuthContext will handle navigation
+        ]
+      );
       // AuthContext will handle navigation on success
     } catch (err) {
       // better error handling

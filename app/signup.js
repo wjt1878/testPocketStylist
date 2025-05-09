@@ -1,10 +1,5 @@
-/* AUTHENTICATION FILES 
-SignupScreen.js - Where new users create an account by entering their 
-email, password and basic info. 
-Validates passwords match.
-*/
-
 import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 import { 
   View, 
   Text, 
@@ -16,7 +11,7 @@ import {
 } from 'react-native';
 import { signupUser } from '../services/auth'; 
 
-export default function SignupScreen({ navigation }) {
+export default function SignupScreen() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -25,6 +20,7 @@ export default function SignupScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const router = useRouter();
   const handleSignup = async () => {
     // Reset error state
     setError('');
@@ -61,10 +57,27 @@ export default function SignupScreen({ navigation }) {
     //actual firebase integration
     try {
       await signupUser(email, password);
-      // AuthContext will handle navigation on success
-      
-      // can add user details to Firestore if needed
-      // await addUserToFirestore(user.uid, { firstName, lastName, email });
+      // Show success alert
+    Alert.alert(
+        'Account Created',
+        'Your account has been successfully created!',
+        [
+          { 
+            text: 'OK',
+            onPress: () => {
+              router.push('/login');
+            } 
+          }
+        ]
+      );
+
+      //clears form fields
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+
     } catch (err) {
       let errorMessage = 'Sign up failed. Please try again.';
       switch (err.code) {
@@ -79,6 +92,7 @@ export default function SignupScreen({ navigation }) {
           break;
       }
       setError(errorMessage);
+      } finally {
       setIsLoading(false);
     }
   };
