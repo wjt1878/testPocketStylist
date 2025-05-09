@@ -1,7 +1,7 @@
 /*
 Profile Screen - Displays & allows editing of user info
 */
-
+import { Linking } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { 
   View, 
@@ -74,18 +74,21 @@ const ProfileScreen = () => {
       }, []);
 
       const requestPhotoPermission = async () => {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert(
-          'Photo Access Required', 
-          'To set a profile picture, please enable photo access in your device settings',
-          [
-            { text: 'Cancel', style: 'cancel' },
-            { text: 'Open Settings', onPress: () => ImagePicker.openSettingsAsync() }
-          ]
-        );
-      }
-    };
+  const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  if (status !== 'granted') {
+    Alert.alert(
+      'Photo Access Required', 
+      'To set a profile picture, please enable photo access in your device settings',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Open Settings', 
+          onPress: () => Linking.openSettings() // uses Linking
+        }
+      ]
+    );
+  }
+};
 
    // load saved profile data from storage
    const loadProfileData = async () => {
