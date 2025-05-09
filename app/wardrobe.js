@@ -1,12 +1,17 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { useWardrobe } from '../context/wardrobeContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; 
 
 export default function WardrobeScreen() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState(''); // using state for search term so can react to changes real-time
   const { wardrobeItems } = useWardrobe(); //pulls items from our global state
+
+  //reset search
+  useEffect(() => {
+    setSearchQuery(''); 
+  }, []);
 
   // to filter items based on user's search query , case-insensitive
   const filteredItems = wardrobeItems.filter(item => 
