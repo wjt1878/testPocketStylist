@@ -94,7 +94,6 @@ function TabsLayout() {
       <Tabs.Screen name="login" options={{ title: 'Log-in', tabBarButton: () => null }} />
       <Tabs.Screen name="signup" options={{ title: 'Sign-up', tabBarButton: () => null }} />
       <Tabs.Screen name="profile/index" options={{ title: 'Profile', tabBarButton: () => null }} />
-      <Tabs.Screen name="change-password" options={{ title: 'Change Password', tabBarButton: () => null }} /> //does this exist?
       <Tabs.Screen name="delete-account" options={{ tabBarButton: () => null }} />
       <Tabs.Screen name="chat/[friendName]" options={{ tabBarButton: () => null }} />
       <Tabs.Screen name="contacts" options={{ tabBarButton: () => null, tabBarStyle: { display: 'none' }, title: 'Chat' }} />

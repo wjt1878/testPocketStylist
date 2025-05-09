@@ -14,6 +14,7 @@ import {
   StyleSheet, 
   Alert
 } from 'react-native';
+import { signupUser } from '../services/auth'; 
 
 export default function SignupScreen({ navigation }) {
   const [firstName, setFirstName] = useState('');
@@ -57,20 +58,27 @@ export default function SignupScreen({ navigation }) {
     // Show loading state
     setIsLoading(true);
     
+    //actual firebase integration
     try {
-      // Implement account creation logic
+      await signupUser(email, password);
+      // AuthContext will handle navigation on success
       
-      // Simulate a delay (for now)
-      setTimeout(() => {
-        setIsLoading(false);
-        // Uncomment to simulate success:
-        // navigation.navigate('Home');
-        
-        // Uncomment to simulate an error:
-        setError('Account creation failed. Please try again.');
-      }, 1500);
+      // can add user details to Firestore if needed
+      // await addUserToFirestore(user.uid, { firstName, lastName, email });
     } catch (err) {
-      setError('Sign up failed. Please try again.');
+      let errorMessage = 'Sign up failed. Please try again.';
+      switch (err.code) {
+        case 'auth/email-already-in-use':
+          errorMessage = 'Email already in use';
+          break;
+        case 'auth/invalid-email':
+          errorMessage = 'Invalid email address';
+          break;
+        case 'auth/weak-password':
+          errorMessage = 'Password should be at least 6 characters';
+          break;
+      }
+      setError(errorMessage);
       setIsLoading(false);
     }
   };
